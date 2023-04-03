@@ -16,6 +16,7 @@ mode_initcontainer = false
 mode_exportcontainer = false
 mode_unexportcontainer = false
 mode_enter = false
+mode_runcontainer = false
 
 mode_verbose = false
 mode_test = false
@@ -48,12 +49,14 @@ def showHelp()
   puts "    "+bold('p')+" - Purge removed package(s)"
   puts
   puts "  "+bold('C')+" - Container-related operations"
+  puts "    "+bold('i')+" - Initialize a container"
   puts "    "+bold('s')+" - Export container package"
-  puts "    "+bold('r')+" - Un-export container package"
+  puts "    "+bold('u')+" - Un-export container package"
   puts "    "+bold('e')+" - Enter container"
+  puts "    "+bold('x')+" - Execute program within a container"
   puts
   puts "  "+bold('v')+" - Show translated apx command that is executed by pax"
-  puts "  "+bold('x')+" - Do not execute the translated command"
+  puts "  "+bold('t')+" - Do not execute the translated command"
   puts "  "+bold('h')+" - Help | Show this message"
   puts
   puts bold("Example")
@@ -107,16 +110,18 @@ ARGV.each do|arg|
           mode_container = true
         when 's'
           mode_exportcontainer = true
-        when 'r'
+        when 'u'
           mode_unexportcontainer = true
         when 'e'
           mode_entercontainer = true
         when 'i'
           mode_initcontainer = true
+        when 'x'
+          mode_runcontainer = true
 
         when 'v'
           mode_verbose = true
-        when 'x'
+        when 't'
           mode_test = true
         when 'h'
           showHelp()
@@ -166,10 +171,11 @@ command << PRE + "purge " + packages.join(" ") + POST if mode_purge && mode_remo
 command << PRE + "autoremove" + POST if mode_autoremove && mode_remove
 
 # Container operations
-command << PRE + "init " + packages.join(" ") + POST if mode_initcontainer
+command << PRE + "init " + packages.join(" ") + POST if mode_initcontainer && mode_container
 command << PRE + "export " + packages.join(" ") + POST if mode_exportcontainer && mode_container
 command << PRE + "unexport " + packages.join(" ") + POST if mode_unexportcontainer && mode_container
 command << PRE + "enter " + packages.join(" ") + POST if mode_exportcontainer && mode_container
+command << PRE + "run " + packages.join(" ") + POST if mode_runcontainer && mode_container
 
 command = command[0...-3] # Cut final " &&"
 
