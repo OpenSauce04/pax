@@ -12,11 +12,11 @@ mode_autoremove = false
 mode_purge = false
 
 mode_container = false
-mode_initcontainer = false
-mode_exportcontainer = false
-mode_unexportcontainer = false
+mode_init = false
+mode_export = false
+mode_unexport = false
 mode_enter = false
-mode_runcontainer = false
+mode_run = false
 
 mode_verbose = false
 mode_test = false
@@ -55,8 +55,8 @@ def showHelp()
   puts "    "+bold('e')+" - Enter container"
   puts "    "+bold('x')+" - Execute program within a container"
   puts
-  puts "  "+bold('v')+" - Show translated apx command that is executed by pax"
-  puts "  "+bold('t')+" - Do not execute the translated command"
+  puts "  "+bold('v')+" - Show the commands that will be executed by apx"
+  puts "  "+bold('t')+" - Do not execute the command (usually used with -v)"
   puts "  "+bold('h')+" - Help | Show this message"
   puts
   puts bold("Example")
@@ -96,6 +96,7 @@ ARGV.each do|arg|
         when 'u'
           mode_upgrade = true
           mode_autoremove = true # As this is a switch case, mode flags that use the same key need to be in the same "when"
+          mode_unexport = true
         when 'c'
           mode_clean = true
 
@@ -109,15 +110,15 @@ ARGV.each do|arg|
         when 'C'
           mode_container = true
         when 's'
-          mode_exportcontainer = true
-        when 'u'
-          mode_unexportcontainer = true
+          mode_export = true
+        #when 'u'
+          #mode_unexport = true
         when 'e'
-          mode_entercontainer = true
+          mode_enter = true
         when 'i'
-          mode_initcontainer = true
+          mode_init = true
         when 'x'
-          mode_runcontainer = true
+          mode_run = true
 
         when 'v'
           mode_verbose = true
@@ -143,7 +144,9 @@ end
 
 # Validate mode combination
 if ((mode_sync || mode_refresh || mode_clean) && !mode_sync) \
-|| (mode_autoremove && !mode_remove && !mode_sync) \
+|| (mode_autoremove && !mode_remove && !mode_sync && !mode_container) \
+|| (mode_purge && !mode_remove)\
+|| ((mode_init || mode_export || mode_enter || mode_run) && !mode_container) \
 || (mode_sync ^ mode_remove ? mode_container : mode_sync) # Magic 3-way comparison I found on Stack Overflow
   STDERR.puts "error: invalid option combination"
   exit 1
@@ -163,7 +166,7 @@ command = ""
 command << PRE + "clean" + POST if mode_clean && mode_sync
 command << PRE + "update" + POST if mode_refresh && mode_sync
 command << PRE + "upgrade" + POST if mode_upgrade && mode_sync
-command << PRE + "install " + packages.join(" ") + POST if mode_sync
+command << PRE + "install " + packages.join(" ") + POST if mode_sync and not packages.empty?
 
 # Remove operations
 command << PRE + "remove " + packages.join(" ") + POST if !mode_purge && !mode_autoremove && mode_remove
@@ -171,11 +174,11 @@ command << PRE + "purge " + packages.join(" ") + POST if mode_purge && mode_remo
 command << PRE + "autoremove" + POST if mode_autoremove && mode_remove
 
 # Container operations
-command << PRE + "init " + packages.join(" ") + POST if mode_initcontainer && mode_container
-command << PRE + "export " + packages.join(" ") + POST if mode_exportcontainer && mode_container
-command << PRE + "unexport " + packages.join(" ") + POST if mode_unexportcontainer && mode_container
-command << PRE + "enter " + packages.join(" ") + POST if mode_exportcontainer && mode_container
-command << PRE + "run " + packages.join(" ") + POST if mode_runcontainer && mode_container
+command << PRE + "init " + packages.join(" ") + POST if mode_init && mode_container
+command << PRE + "export " + packages.join(" ") + POST if mode_export && mode_container
+command << PRE + "unexport " + packages.join(" ") + POST if mode_unexport && mode_container
+command << PRE + "enter " + packages.join(" ") + POST if mode_enter && mode_container
+command << PRE + "run " + packages.join(" ") + POST if mode_run && mode_container
 
 command = command[0...-3] # Cut final " &&"
 
