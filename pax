@@ -42,7 +42,7 @@ def showHelp()
   puts "  "+bold('S')+" - Install package(s) / Installation-related operations"
   puts "    "+bold('y')+" - Update package list"
   puts "    "+bold('u')+" - Upgrade all available packages"
-  puts "    "+bold('c')+" - Clean package manager cache"
+  puts "    "+bold('c')+" - Clean apx cache"
   puts
   puts "  "+bold('R')+" - Remove package(s) / Removal-related operations"
   puts "    "+bold('u')+" - Remove all unused packages"
@@ -60,8 +60,11 @@ def showHelp()
   puts "  "+bold('h')+" - Help | Show this message"
   puts
   puts bold("Example")
-  puts "$ pax -Ru && pax @apt -Syu wine"
-  puts "Removes all unused packages, updates package lists, upgrades available packages, then installs wine in the Ubuntu container"
+  puts " pax -Ru @aur && pax -Syu wine @aur"
+  puts "• Removes all unused packages in the Arch container"
+  puts "• Updates package lists in the Arch container"
+  puts "• Upgrades available packages in the Arch container"
+  puts "• Installs wine in the Arch container"
   puts
   exit 0
 end
