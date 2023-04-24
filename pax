@@ -184,6 +184,11 @@ command << PRE + "run " + packages.join(" ") + POST if mode_run && mode_containe
 
 command = command[0...-3] # Cut final " &&"
 
+if command == ''
+  showHelp()
+  exit(0)
+end
+
 puts command if mode_verbose
 
 exec(command) if !mode_test
