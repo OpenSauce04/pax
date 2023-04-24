@@ -177,7 +177,7 @@ command << PRE + "autoremove" + POST if mode_autoremove && mode_remove
 
 # Container operations
 command << PRE + "init " + packages.join(" ") + POST if mode_init && mode_container
-command << PRE + "export " + packages.join(" ") + POST if mode_export && mode_container
+command << PRE + "export --bin " + packages.join(" ") + POST if mode_export && mode_container
 command << PRE + "unexport " + packages.join(" ") + POST if mode_unexport && mode_container
 command << PRE + "enter " + packages.join(" ") + POST if mode_enter && mode_container
 command << PRE + "run " + packages.join(" ") + POST if mode_run && mode_container
