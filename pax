@@ -86,7 +86,7 @@ ARGV.each do|arg|
 
     arg.split("").drop(1).each do |char|
 
-      if arg.include?('V') || arg.include?('-version')
+      if arg.include?('V') || arg.eql?("--version")
         puts "\n         " + bold("pax v" + version) + "\napx with pacman-like syntax\n\n"
         exit 0
       end
