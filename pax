@@ -160,10 +160,10 @@ end
 # Build the command that will be executed
 PRE = "apx "
 if distro != "NONE"
-  POST = " " + distro + " && "
-else
-  POST = " && "
+  PRE << distro+' '
 end
+
+POST = " && "
 
 command = ""
 
