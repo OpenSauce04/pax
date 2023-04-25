@@ -27,18 +27,8 @@ def bold(str) return "\033[1m" + str + "\033[0m" end
 
 def showHelp()
   puts "\n            " + bold("pax") + "\napx with pacman-like syntax\n\n"
-  puts bold("Select container [@]")
-  puts "  "+bold('@')+"[distro]"
-  puts "  Available:"
-  puts "    apt - Ubuntu"
-  puts "    aur - Arch + AUR"
-  puts "    dnf - Fedora"
-  puts "    apk - Alpine"
-  puts "    zypper - openSUSE"
-  puts "    xbps - Void"
-  puts "    nix - Nixpkgs"
   puts
-  puts bold("Options [-]")
+  puts bold("Flags [-]")
   puts "  "+bold('S')+" - Install package(s) / Installation-related operations"
   puts "    "+bold('y')+" - Update package list"
   puts "    "+bold('u')+" - Upgrade all available packages"
@@ -58,6 +48,17 @@ def showHelp()
   puts "  "+bold('v')+" - Show the commands that will be executed by apx"
   puts "  "+bold('t')+" - Do not execute the command (usually used with -v)"
   puts "  "+bold('h')+" - Help | Show this message"
+  puts
+  puts bold("Select container [@]")
+  puts "  "+bold('@')+"[distro]"
+  puts "  Available:"
+  puts "    apt - Ubuntu"
+  puts "    aur - Arch + AUR"
+  puts "    dnf - Fedora"
+  puts "    apk - Alpine"
+  puts "    zypper - openSUSE"
+  puts "    xbps - Void"
+  puts "    nix - Nixpkgs"
   puts
   puts bold("Example")
   puts " pax -Ru @aur && pax -Syu wine @aur"
