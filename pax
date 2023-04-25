@@ -157,9 +157,10 @@ end
 
 # Build the command that will be executed
 PRE = "apx "
-POST = " && "
 if distro != "NONE"
   POST = " " + distro + " && "
+else
+  POST = " && "
 end
 
 command = ""
